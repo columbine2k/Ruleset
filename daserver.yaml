@@ -1,0 +1,345 @@
+#DNS
+dns:
+  enable: true
+  ipv6: true
+  listen: :23453
+  enhanced-mode: redir-host
+  prefer-h3: false
+  respect-rules: true
+  nameserver-policy:
+    "geosite: gfw":
+      - https://dns.dns-53.us/dns-query
+      - tls://sg01.dns4me.net
+      - tls://unfiltered.adguard-dns.com
+  nameserver:
+    - https://doh.pub/dns-query
+    - 119.29.29.29
+    - 223.5.5.5
+  proxy-server-nameserver:
+    - 119.29.29.29
+    - 223.5.5.5
+port: 7890
+proxies:
+
+# 机场配置模块
+provider_config: &provider_config
+  type: http
+  interval: 43200
+  proxy: DIRECT
+  user-agent: clash.meta
+  health-check:
+    enable: true
+    url: http://www.apple.com/library/test/success.html
+    interval: 300
+
+proxy-providers:
+  AP1:
+    url: #修改你的机场1订阅地址
+    <<: *provider_config
+    override:
+      additional-prefix: "[V2R] "
+      skip-cert-verify: true
+      udp: true
+  AP2:
+    url: #修改你的机场2订阅地址
+    <<: *provider_config
+    override:
+      additional-prefix: "[SSR] "
+      skip-cert-verify: true
+      udp: true
+
+# 分组配置模块
+standard_proxies: &standard_proxies
+  type: select
+  proxies:
+    - DIRECT
+    - 🚀 总模式
+    - 🇭🇰 香港节点
+    - 🇺🇸 美国节点
+    - 🇯🇵 日本节点
+    - 🏝️ 台湾节点
+    - 🇰🇷 韩国节点
+    - 🇸🇬 狮城节点
+    - ⚙️ 手动切换
+
+all_proxies: &all_proxies
+  type: select
+  proxies:
+    - ♻️ 自动选择
+    - 🇭🇰 香港节点
+    - 🇺🇸 美国节点
+    - 🇯🇵 日本节点
+    - 🏝️ 台湾节点
+    - 🇰🇷 韩国节点
+    - 🇸🇬 狮城节点
+    - ⚙️ 手动切换
+    - 🌏️ 其他节点
+    - DIRECT
+
+# 节点配置模块
+filter_proxies: &filter_proxies
+  type: url-test
+  url: http://www.gstatic.com/generate_204
+  interval: 300
+  tolerance: 100
+  include-all: true
+
+proxy-groups:
+  - name: 🚀 总模式
+    <<: *all_proxies
+
+  - name: ⚙️ 手动切换
+    type: select
+    include-all: true
+
+  - name: ♻️ 自动选择
+    <<: *filter_proxies
+
+  - name: 🤖 AI
+    <<: *standard_proxies
+
+  - name: ☁️ PikPak
+    <<: *standard_proxies
+
+  - name: 🔞 Porn
+    <<: *standard_proxies
+
+  - name: 📲 聊天社交
+    <<: *standard_proxies
+
+  - name: 📺️ 油管视频
+    <<: *standard_proxies
+
+  - name: 🌐 国外媒体
+    <<: *standard_proxies
+
+  - name: 🇨🇳 国内网站
+    <<: *standard_proxies
+
+  - name: Ⓜ️ 微软云盘
+    <<: *standard_proxies
+
+  - name: Ⓜ️ 微软服务
+    <<: *standard_proxies
+
+  - name: 🍎 苹果服务
+    <<: *standard_proxies
+
+  - name: 🎮 游戏平台
+    <<: *standard_proxies
+
+  - name: 🎵 音乐流媒
+    <<: *standard_proxies
+
+  - name: 🎯 全球直连
+    type: select
+    proxies:
+      - DIRECT
+      - 🚀 总模式
+      - ♻️ 自动选择
+
+  - name: ⛔️ 广告拦截
+    type: select
+    proxies:
+      - REJECT
+      - DIRECT
+      - PASS
+
+  - name: 🍃 应用净化
+    type: select
+    proxies:
+      - REJECT
+      - DIRECT
+      - PASS
+
+  - name: 🐟 漏网之鱼
+    <<: *standard_proxies
+
+  - name: 🇭🇰 香港节点
+    <<: *filter_proxies
+    filter: '^(?=.*((?i)🇭🇰|香港|(\b(HK|Hong)\b))).*$'
+
+  - name: 🇺🇸 美国节点
+    <<: *filter_proxies
+    filter: '^(?=.*((?i)🇺🇸|美国|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|(\b(US|United States)\b))).*$'
+
+  - name: 🇯🇵 日本节点
+    <<: *filter_proxies
+    filter: '^(?=.*((?i)🇯🇵|日本|川日|东京|大阪|泉日|埼玉|(\b(JP|Japan)\b))).*$'
+
+  - name: 🏝️ 台湾节点
+    <<: *filter_proxies
+    filter: '^(?=.*((?i)🇨🇳|🇹🇼|TW|台湾)).*$'
+
+  - name: 🇰🇷 韩国节点
+    <<: *filter_proxies
+    filter: '^(?=.*((?i)🇰🇷|韩国|首尔|(\b(KR|Korea)\b))).*$'
+
+  - name: 🇸🇬 狮城节点
+    <<: *filter_proxies
+    filter: '^(?=.*((?i)🇸🇬|新加坡|狮|(\b(SG|Singapore)\b))).*$'
+
+  - name: 🌏️ 其他节点
+    <<: *filter_proxies
+    filter: '^(?!.*(🇺🇸|美国|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States|🇭🇰|香港|HK|Hong|🇯🇵|日本|川日|东京|大阪|泉日|埼玉|JP|Japan|🇨🇳|台湾|🇹🇼|TW|🇸🇬|新加坡|狮|SG|Singapore|🇰🇷|韩国|首尔|KR|Korea)).*$'
+
+# ruleSet配置模块
+rule-anchor:
+  basic: &basic
+    type: http
+    interval: 43200
+    behavior: classical
+    format: text
+
+  others: &others
+    type: http
+    interval: 43200
+    behavior: classical
+    format: yaml
+
+  mihomo: &mihomo
+    type: http
+    interval: 43200
+    behavior: domain
+    format: mrs
+
+  ip: &ip
+    type: http
+    interval: 43200
+    behavior: ipcidr
+    format: mrs
+
+rule-providers:
+  LocalAreaNetwork:
+    <<: *basic
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/LocalAreaNetwork.list
+
+  UnBan:
+    <<: *basic
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/UnBan.list
+
+  BanAD:
+    <<: *basic
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanAD.list
+
+  BanProgramAD:
+    <<: *basic
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanProgramAD.list
+
+  AiDomain:
+    <<: *basic
+    url: https://raw.githubusercontent.com/szkane/ClashRuleSet/main/Clash/Ruleset/AiDomain.list
+
+  SteamCN:
+    <<: *basic
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/SteamCN.list
+
+  PikPak:
+    <<: *basic
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/PikPak/PikPak.list
+
+  Porn:
+    <<: *basic
+    url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/Porn.list
+
+  OneDrive:
+    <<: *basic
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/OneDrive.list
+
+  Microsoft:
+    <<: *basic
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Microsoft.list
+
+  apple@cn:
+    <<: *mihomo
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple@cn.mrs
+
+  Apple:
+    <<: *basic
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Apple.list
+
+  Telegram:
+    <<: *basic
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Telegram.list
+
+  Line:
+    <<: *basic
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Line.list
+
+  Facebook:
+    <<: *basic
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Facebook.list
+
+  TikTok:
+    <<: *basic
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/TikTok.list
+
+  Deezer:
+    <<: *basic
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Deezer.list
+
+  Spotify:
+    <<: *basic
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Spotify.list
+
+  Steam:
+    <<: *basic
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Steam.list
+
+  YouTube:
+    <<: *basic
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/YouTube.list
+
+  ChinaMedia:
+    <<: *basic
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaMedia.list
+
+  ProxyMedia:
+    <<: *basic
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyMedia.list
+
+  ProxyGFWlist:
+    <<: *basic
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyGFWlist.list
+
+  ChinaDomain:
+    <<: *basic
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaDomain.list
+
+  ChinaCompanyIp:
+    <<: *basic
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaCompanyIp.list
+
+  Download:
+    <<: *basic
+    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Download.list
+
+rules:
+  - RULE-SET,LocalAreaNetwork,🎯 全球直连
+  - RULE-SET,UnBan,🎯 全球直连
+  - RULE-SET,BanAD,⛔️ 广告拦截
+  - RULE-SET,BanProgramAD,🍃 应用净化
+  - RULE-SET,AiDomain,🤖 AI
+  - RULE-SET,SteamCN,🎯 全球直连
+  - RULE-SET,PikPak,☁️ PikPak
+  - RULE-SET,Porn,🔞 Porn
+  - RULE-SET,OneDrive,Ⓜ️ 微软云盘
+  - RULE-SET,Microsoft,Ⓜ️ 微软服务
+  - RULE-SET,apple@cn,🎯 全球直连
+  - RULE-SET,Apple,🍎 苹果服务
+  - RULE-SET,Telegram,📲 聊天社交
+  - RULE-SET,Line,📲 聊天社交
+  - RULE-SET,Facebook,📲 聊天社交
+  - RULE-SET,TikTok,🎵 音乐流媒
+  - RULE-SET,Deezer,🎵 音乐流媒
+  - RULE-SET,Spotify,🎵 音乐流媒
+  - RULE-SET,Steam,🎮 游戏平台
+  - RULE-SET,YouTube,📺️ 油管视频
+  - RULE-SET,ChinaMedia,🇨🇳 国内网站
+  - RULE-SET,ProxyMedia,🌐 国外媒体
+  - RULE-SET,ProxyGFWlist,🚀 总模式
+  - RULE-SET,ChinaDomain,🎯 全球直连
+  - RULE-SET,ChinaCompanyIp,🎯 全球直连
+  - RULE-SET,Download,🎯 全球直连
+  - GEOIP,CN,🎯 全球直连
+  - MATCH,🐟 漏网之鱼
