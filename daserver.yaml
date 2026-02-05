@@ -210,6 +210,10 @@ rule-anchor:
     format: mrs
 
 rule-providers:
+  Direct:
+    <<: *others
+    url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/Direct.yaml
+
   LocalAreaNetwork:
     <<: *basic
     url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/LocalAreaNetwork.list
@@ -314,7 +318,12 @@ rule-providers:
     <<: *basic
     url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Download.list
 
+  China:
+    <<: *others
+    url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/China.yaml
+
 rules:
+  - RULE-SET,Direct,DIRECT
   - RULE-SET,LocalAreaNetwork,🎯 全球直连
   - RULE-SET,UnBan,🎯 全球直连
   - RULE-SET,BanAD,⛔️ 广告拦截
@@ -341,5 +350,5 @@ rules:
   - RULE-SET,ChinaDomain,🎯 全球直连
   - RULE-SET,ChinaCompanyIp,🎯 全球直连
   - RULE-SET,Download,🎯 全球直连
-  - GEOIP,CN,🎯 全球直连
+  - RULE-SET,China,🎯 全球直连
   - MATCH,🐟 漏网之鱼
