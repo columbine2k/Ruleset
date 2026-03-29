@@ -104,6 +104,9 @@ proxy-groups:
   - name: 🔞 Porn
     <<: *standard_proxies
 
+  - name: 🔞 Jav
+    <<: *standard_proxies
+
   - name: 📲 聊天社交
     <<: *standard_proxies
 
@@ -246,6 +249,10 @@ rule-providers:
     <<: *basic
     url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/Porn.list
 
+  Jav:
+    <<: *basic
+    url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/Jav.list
+
   OneDrive:
     <<: *basic
     url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/OneDrive.list
@@ -340,6 +347,7 @@ rules:
   - RULE-SET,SteamCN,🎯 全球直连
   - RULE-SET,PikPak,☁️ PikPak
   - RULE-SET,Porn,🔞 Porn
+  - RULE-SET,Jav,🔞 Jav
   - RULE-SET,OneDrive,Ⓜ️ 微软云盘
   - RULE-SET,Microsoft,Ⓜ️ 微软服务
   - RULE-SET,apple@cn,🎯 全球直连
