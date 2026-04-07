@@ -305,6 +305,14 @@ rule-providers:
     <<: *basic
     url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Spotify.list
 
+  ListenBrainz:
+    <<: *basic
+    url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/ListenBrainz.list
+
+  LastFM:
+    <<: *basic
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/LastFM/LastFM.list
+
   Steam:
     <<: *basic
     url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Steam.list
@@ -365,6 +373,8 @@ rules:
   - RULE-SET,TikTok,🎵 音乐流媒
   - RULE-SET,Deezer,🎵 音乐流媒
   - RULE-SET,Spotify,🎵 音乐流媒
+  - RULE-SET,ListenBrainz,🎵 音乐流媒
+  - RULE-SET,LastFM,🎵 音乐流媒
   - RULE-SET,Steam,🎮 游戏平台
   - RULE-SET,YouTube,📺️ 油管视频
   - RULE-SET,ChinaMedia,🇨🇳 国内网站
