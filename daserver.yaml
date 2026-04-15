@@ -101,6 +101,9 @@ proxy-groups:
   - name: ☁️ PikPak
     <<: *standard_proxies
 
+  - name: ⚙️ Custom
+    <<: *standard_proxies
+
   - name: 📲 聊天社交
     <<: *standard_proxies
 
@@ -123,9 +126,6 @@ proxy-groups:
     <<: *standard_proxies
 
   - name: 🎮 游戏平台
-    <<: *standard_proxies
-
-  - name: 🔞 Jav
     <<: *standard_proxies
 
   - name: 🔞 Pornmeta
