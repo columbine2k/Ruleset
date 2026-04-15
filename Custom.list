@@ -1,5 +1,7 @@
-# NAME: jav
+# NAME: Custom
 # TOTAL:
+
+# jav
 DOMAIN-SUFFIX,jav321.com
 DOMAIN-SUFFIX,javbus.com
 DOMAIN-SUFFIX,javdb.com
@@ -8,3 +10,11 @@ DOMAIN-SUFFIX,javhoo.com
 DOMAIN-SUFFIX,javlibrary.com
 DOMAIN-SUFFIX,javten.com
 DOMAIN-SUFFIX,missav.ws
+
+# music
+DOMAIN-SUFFIX,listenbrainz.org
+
+# others
+DOMAIN-SUFFIX,playno1.com
+DOMAIN-SUFFIX,laowang.vip
+DOMAIN-SUFFIX,blue-plus.net
