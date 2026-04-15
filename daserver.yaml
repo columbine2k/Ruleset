@@ -101,7 +101,7 @@ proxy-groups:
   - name: ☁️ PikPak
     <<: *standard_proxies
 
-  - name: ⚙️ Custom
+  - name: 💡 Custom
     <<: *standard_proxies
 
   - name: 📲 聊天社交
@@ -354,8 +354,8 @@ rules:
   - RULE-SET,AiDomain,🤖 AI
   - RULE-SET,SteamCN,🎯 全球直连
   - RULE-SET,PikPak,☁️ PikPak
+  - RULE-SET,Custom,💡 Custom
   - RULE-SET,Pornmeta,🔞 Pornmeta
-  - RULE-SET,Custom,⚙️ Custom
   - RULE-SET,OneDrive,Ⓜ️ 微软云盘
   - RULE-SET,Microsoft,Ⓜ️ 微软服务
   - RULE-SET,apple@cn,🎯 全球直连
