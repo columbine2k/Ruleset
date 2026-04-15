@@ -11,10 +11,13 @@ DOMAIN-SUFFIX,javlibrary.com
 DOMAIN-SUFFIX,javten.com
 DOMAIN-SUFFIX,missav.ws
 
+# porn_external
+DOMAIN-SUFFIX,playno1.com
+DOMAIN-SUFFIX,laowang.vip
+DOMAIN-SUFFIX,blue-plus.net
+
 # music
 DOMAIN-SUFFIX,listenbrainz.org
 
 # others
-DOMAIN-SUFFIX,playno1.com
-DOMAIN-SUFFIX,laowang.vip
-DOMAIN-SUFFIX,blue-plus.net
+DOMAIN-SUFFIX,v2ex.com
