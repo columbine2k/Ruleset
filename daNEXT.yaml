@@ -244,6 +244,10 @@ rule-providers:
     <<: *basic
     url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/Mzone.list
 
+  Twitter:
+    <<: *basic
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Twitter/Twitter.list
+
   Telegram:
     <<: *basic
     url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Telegram.list
@@ -330,6 +334,7 @@ rules:
   - RULE-SET,OneDrive,Ⓜ️ 微软云盘
   - RULE-SET,Microsoft,Ⓜ️ 微软服务
   - RULE-SET,Mzone,💡 Mzone
+  - RULE-SET,Twitter,📲 聊天社交
   - RULE-SET,Telegram,📲 聊天社交
   - RULE-SET,Line,📲 聊天社交
   - RULE-SET,Instagram,📲 聊天社交
@@ -348,5 +353,4 @@ rules:
   - RULE-SET,ChinaDomain,🎯 全球直连
   - RULE-SET,ChinaCompanyIp,🎯 全球直连
   - RULE-SET,Download,🎯 全球直连
-  - GEOIP,CN,🎯 全球直连
   - MATCH,🐟 漏网之鱼
