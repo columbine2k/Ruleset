@@ -1,34 +1,66 @@
-# ----- redir-host -----
+# ----- Fake-IP -----
 dns:
   enable: true
   ipv6: false
   listen: :23453
-  enhanced-mode: redir-host
-  respect-rules: true
-  proxy-server-nameserver:
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+    - 180.76.76.76
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-range6: fdfe:dcba:9876::1/64
+  fake-ip-filter-mode: rule
+  respect-rules: false
+  prefer-h3: false
+  fake-ip-filter:
+    - RULE-SET,private,real-ip
+    - RULE-SET,category-ads-all,real-ip
+    - RULE-SET,tracker,real-ip
+    - RULE-SET,category-pt,real-ip
+    - RULE-SET,category-ai-!cn,fake-ip
+    - RULE-SET,google,fake-ip
+    - RULE-SET,google@cn,fake-ip
+    - RULE-SET,x,fake-ip
+    - RULE-SET,telegram,fake-ip
+    - RULE-SET,instagram,fake-ip
+    - RULE-SET,facebook,fake-ip
+    - RULE-SET,threads,fake-ip
+    - RULE-SET,youtube,fake-ip
+    - RULE-SET,tiktok,fake-ip
+    - RULE-SET,spotify,fake-ip
+    - RULE-SET,deezer,fake-ip
+    - RULE-SET,lastfm,fake-ip
+    - RULE-SET,pikpak,fake-ip
+    - RULE-SET,dmm,fake-ip
+    - RULE-SET,javdb,fake-ip
+    - RULE-SET,apple,real-ip
+    - RULE-SET,microsoft,real-ip
+    - RULE-SET,steam,real-ip
+    - RULE-SET,cloudflare,fake-ip
+    - RULE-SET,geolocation-!cn,fake-ip
+    - RULE-SET,apple@cn,real-ip
+    - RULE-SET,microsoft@cn,real-ip
+    - RULE-SET,steam@cn,real-ip
+    - RULE-SET,cloudflare@cn,real-ip
+    - RULE-SET,cn,real-ip
+    - RULE-SET,MATCH,real-ip
+  nameserver:
     - 119.29.29.29
     - 223.5.5.5
-  nameserver-policy:
-    "+.steampowered.com": "223.5.5.5"
-    "geosite: gfw":
-      - https://dns.dns-53.us/dns-query
-      - tls://sg01.dns4me.net
-      - tls://unfiltered.adguard-dns.com
-  nameserver:
-    - https://doh.pub/dns-query
-    - 223.5.5.5
+    - 180.76.76.76
 port: 7890
 proxies:
 
 # ----- 机场配置模块 -----
 provider_config: &provider_config
   type: http
-  interval: 43200
+  interval: 86400
   proxy: DIRECT
-  user-agent: clash.meta
+  user-agent: clash.meta.mihomo
   health-check:
     enable: true
-    url: http://www.gstatic.com/generate_204
+    url: http://www.apple.com/library/test/success.html
     interval: 300
 
 proxy-providers:
@@ -47,7 +79,7 @@ proxy-providers:
       skip-cert-verify: true
       udp: true
 
-# 分组配置模块
+# ----- 分组配置模块 -----
 standard_proxies: &standard_proxies
   type: select
   proxies:
@@ -83,7 +115,9 @@ filter_proxies: &filter_proxies
   tolerance: 100
   include-all: true
 
+# ----- 域名策略模块 -----
 proxy-groups:
+  # 基础策略
   - name: 🚀 总模式
     <<: *all_proxies
 
@@ -94,40 +128,40 @@ proxy-groups:
   - name: ♻️ 自动选择
     <<: *filter_proxies
 
-  - name: 🚨 国外DNS
+  - name: 🤖 AI
     <<: *standard_proxies
 
-  - name: 🤖 AI
+  - name: 📲 社交网络
+    <<: *standard_proxies
+
+  - name: 📀 音视频
     <<: *standard_proxies
 
   - name: ☁️ PikPak
     <<: *standard_proxies
 
-  - name: 🔞 Pornmeta
+  - name: ㊙️ Dmm
+    <<: *standard_proxies
+
+  - name: 🔞 Porn
     <<: *standard_proxies
 
   - name: 🍎 苹果服务
     <<: *standard_proxies
 
-  - name: Ⓜ️ 微软云盘
-    <<: *standard_proxies
-
   - name: Ⓜ️ 微软服务
-    <<: *standard_proxies
-
-  - name: 💡 Mzone
-    <<: *standard_proxies
-
-  - name: 📲 聊天社交
-    <<: *standard_proxies
-
-  - name: 🎵 音乐流媒
     <<: *standard_proxies
 
   - name: 🎮 游戏平台
     <<: *standard_proxies
 
-  - name: 🌐 国外媒体
+  - name: 🚨 Cloudflare
+    <<: *standard_proxies
+
+  - name: 🌐 国外网站
+    <<: *standard_proxies
+
+  - name: 🇨🇳 国内网站
     <<: *standard_proxies
 
   - name: 🎯 全球直连
@@ -154,6 +188,7 @@ proxy-groups:
   - name: 🐟 漏网之鱼
     <<: *standard_proxies
 
+  # ----- 节点分组策略 -----
   - name: 🇭🇰 香港节点
     <<: *filter_proxies
     filter: '^(?=.*((?i)🇭🇰|香港|(\b(HK|Hong)\b))).*$'
@@ -168,7 +203,7 @@ proxy-groups:
 
   - name: 🏝️ 台湾节点
     <<: *filter_proxies
-    filter: "^(?=.*((?i)🇨🇳|🇹🇼|TW|台湾)).*$"
+    filter: "^(?=.*((?i)🇹🇼|TW|台湾)).*$"
 
   - name: 🇰🇷 韩国节点
     <<: *filter_proxies
@@ -182,176 +217,267 @@ proxy-groups:
     <<: *filter_proxies
     filter: "^(?!.*(🇺🇸|美国|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States|🇭🇰|香港|HK|Hong|🇯🇵|日本|川日|东京|大阪|泉日|埼玉|JP|Japan|🇨🇳|台湾|🇹🇼|TW|🇸🇬|新加坡|狮|SG|Singapore|🇰🇷|韩国|首尔|KR|Korea)).*$"
 
-# ----- ruleSet配置模块 -----
+# ----- 规则集模块 -----
 rule-anchor:
-  basic: &basic
+  domain: &domain
     type: http
     interval: 43200
-    behavior: classical
-    format: text
+    behavior: domain
+    format: mrs
 
-# ----- 规则集 -----
+  ip: &ip
+    type: http
+    interval: 43200
+    behavior: ipcidr
+    format: mrs
+
+# =============================== -  远程规则  - ================================
 rule-providers:
-  DnsProxy:
-    <<: *basic
-    url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/DnsProxy.list
+  # 内网规则
+  private:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs
 
-  LocalAreaNetwork:
-    <<: *basic
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/LocalAreaNetwork.list
+  # 广告拦截
+  category-ads-all:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ads-all.mrs
 
-  UnBan:
-    <<: *basic
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/UnBan.list
+  # PT/BT
+  tracker:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tracker.mrs
 
-  BanAD:
-    <<: *basic
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanAD.list
+  category-pt:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-pt.mrs
 
-  BanProgramAD:
-    <<: *basic
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/BanProgramAD.list
+  # AI 相关
+  category-ai-!cn:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ai-!cn.mrs
 
-  AiDomain:
-    <<: *basic
-    url: https://raw.githubusercontent.com/szkane/ClashRuleSet/main/Clash/Ruleset/AiDomain.list
+  google:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs
 
-  SteamCN:
-    <<: *basic
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/SteamCN.list
+  google@cn:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google@cn.mrs
 
-  PikPak:
-    <<: *basic
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/PikPak/PikPak.list
+  # 社交网络
+  x:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/x.mrs
 
-  Pornmeta:
-    <<: *basic
-    url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/Pornmeta.list
+  telegram:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.mrs
 
-  Apple:
-    <<: *basic
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Apple.list
+  instagram:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/instagram.mrs
 
-  OneDrive:
-    <<: *basic
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/OneDrive.list
+  facebook:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/facebook.mrs
 
-  Microsoft:
-    <<: *basic
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Microsoft.list
+  threads:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/threads.mrs
 
-  Mzone:
-    <<: *basic
-    url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/Mzone.list
+  # 音视频
+  youtube:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs
 
-  Twitter:
-    <<: *basic
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Twitter/Twitter.list
+  tiktok:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tiktok.mrs
 
-  Telegram:
-    <<: *basic
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Telegram.list
+  spotify:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/spotify.mrs
 
-  Line:
-    <<: *basic
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Line.list
+  deezer:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/deezer.mrs
 
-  Instagram:
-    <<: *basic
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Instagram.list
+  lastfm:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/lastfm.mrs
 
-  Facebook:
-    <<: *basic
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Facebook.list
+  # pikpak
+  pikpak:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/pikpak.mrs
 
-  Threads:
-    <<: *basic
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Threads/Threads.list
+  # dmm
+  dmm:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/dmm.mrs
 
-  YouTube:
-    <<: *basic
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/YouTube.list
+  # porn
+  javdb:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/javdb.mrs
 
-  TikTok:
-    <<: *basic
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/TikTok.list
+  # apple
+  apple:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple.mrs
 
-  Deezer:
-    <<: *basic
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Deezer.list
+  apple@cn:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple@cn.mrs
 
-  Spotify:
-    <<: *basic
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Spotify.list
+  # microsoft
+  microsoft:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.mrs
 
-  LastFM:
-    <<: *basic
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/LastFM/LastFM.list
+  microsoft@cn:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft@cn.mrs
 
-  Steam:
-    <<: *basic
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Ruleset/Steam.list
+  # 游戏平台
+  steam:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam.mrs
 
-  ChinaMedia:
-    <<: *basic
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaMedia.list
+  steam@cn:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam@cn.mrs
 
-  Pixiv:
-    <<: *basic
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Pixiv/Pixiv.list
+  # cloudflare
+  cloudflare:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cloudflare.mrs
 
-  ProxyMedia:
-    <<: *basic
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyMedia.list
+  cloudflare@cn:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cloudflare@cn.mrs
 
-  ProxyGFWlist:
-    <<: *basic
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyGFWlist.list
+  # 国外网站
+  geolocation-!cn:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.mrs
 
-  ChinaDomain:
-    <<: *basic
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaDomain.list
+  # 国内直连
+  cn:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.mrs
 
-  ChinaCompanyIp:
-    <<: *basic
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ChinaCompanyIp.list
+  # IP 规则集（GeoIP）
+  private_ip:
+    <<: *ip
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/private.mrs
 
-  Download:
-    <<: *basic
-    url: https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Download.list
+  ad_ip:
+    <<: *ip
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/ad.mrs
+
+  google_ip:
+    <<: *ip
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/google.mrs
+
+  x_ip:
+    <<: *ip
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/twitter.mrs
+
+  telegram_ip:
+    <<: *ip
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/telegram.mrs
+
+  facebook_ip:
+    <<: *ip
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/facebook.mrs
+
+  apple_ip:
+    <<: *ip
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/apple.mrs
+
+  cloudflare_ip:
+    <<: *ip
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/cloudflare.mrs
+
+  cn_ip:
+    <<: *ip
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo-lite/geoip/cn.mrs
 
 rules:
-  - RULE-SET,DnsProxy,🚨 国外DNS
-  - RULE-SET,LocalAreaNetwork,🎯 全球直连
-  - RULE-SET,UnBan,🎯 全球直连
-  - RULE-SET,BanAD,⛔️ 广告拦截
-  - RULE-SET,BanProgramAD,🍃 应用净化
-  - RULE-SET,AiDomain,🤖 AI
-  - RULE-SET,SteamCN,🎯 全球直连
-  - RULE-SET,PikPak,☁️ PikPak
-  - RULE-SET,Pornmeta,🔞 Pornmeta
-  - RULE-SET,Apple,🍎 苹果服务
-  - RULE-SET,OneDrive,Ⓜ️ 微软云盘
-  - RULE-SET,Microsoft,Ⓜ️ 微软服务
-  - RULE-SET,Mzone,💡 Mzone
-  - RULE-SET,Twitter,📲 聊天社交
-  - RULE-SET,Telegram,📲 聊天社交
-  - RULE-SET,Line,📲 聊天社交
-  - RULE-SET,Instagram,📲 聊天社交
-  - RULE-SET,Facebook,📲 聊天社交
-  - RULE-SET,Threads,📲 聊天社交
-  - RULE-SET,YouTube,🎵 音乐流媒
-  - RULE-SET,TikTok,🎵 音乐流媒
-  - RULE-SET,Deezer,🎵 音乐流媒
-  - RULE-SET,Spotify,🎵 音乐流媒
-  - RULE-SET,LastFM,🎵 音乐流媒
-  - RULE-SET,Steam,🎮 游戏平台
-  - RULE-SET,ChinaMedia,🎯 全球直连
-  - RULE-SET,Pixiv,🌐 国外媒体
-  - RULE-SET,ProxyMedia,🌐 国外媒体
-  - RULE-SET,ProxyGFWlist,🚀 总模式
-  - RULE-SET,ChinaDomain,🎯 全球直连
-  - RULE-SET,ChinaCompanyIp,🎯 全球直连
-  - RULE-SET,Download,🎯 全球直连
-  - GEOIP,CN,🎯 全球直连
+  # 1. 内网与私有网络 (直连)
+  - RULE-SET,private_ip,DIRECT,no-resolve
+  - RULE-SET,private,DIRECT
+
+  # 2. 广告拦截
+  - RULE-SET,category-ads-all,⛔️ 广告拦截
+  - RULE-SET,ad_ip,⛔️ 广告拦截,no-resolve
+
+  # 3. PT/BT (直连)
+  - RULE-SET,tracker,DIRECT,no-resolve
+  - RULE-SET,category-pt,DIRECT,no-resolve
+
+  # 4. AI 相关
+  - RULE-SET,category-ai-!cn,🤖 AI
+  - RULE-SET,google,🤖 AI
+  - RULE-SET,google@cn,🤖 AI
+
+  # 5. 社交网络
+  - RULE-SET,x,📲 社交网络
+  - RULE-SET,telegram,📲 社交网络
+  - RULE-SET,instagram,📲 社交网络
+  - RULE-SET,facebook,📲 社交网络
+  - RULE-SET,threads,📲 社交网络
+
+  # 6. 音视频
+  - RULE-SET,youtube,📀 音视频
+  - RULE-SET,tiktok,📀 音视频
+  - RULE-SET,spotify,📀 音视频
+  - RULE-SET,deezer,📀 音视频
+  - RULE-SET,lastfm,📀 音视频
+
+  # 7. Pikpak
+  - RULE-SET,pikpak,☁️ PikPak
+
+  # 8. Dmm
+  - RULE-SET,dmm,㊙️ Dmm
+
+  # 9. Porn
+  - RULE-SET,javdb,🔞 Porn
+
+  # 10. 苹果服务
+  - RULE-SET,apple,🍎 苹果服务
+
+  # 11. 微软服务
+  - RULE-SET,microsoft,Ⓜ️ 微软服务
+
+  # 12. 游戏平台
+  - RULE-SET,steam,🎮 游戏平台
+
+  # 13. Cloudflare
+  - RULE-SET,cloudflare,🚨 Cloudflare
+
+  # 14. 国外网站
+  - RULE-SET,geolocation-!cn,🌐 国外网站
+
+  # 15. 国内网站
+  - RULE-SET,apple@cn,🇨🇳 国内网站
+  - RULE-SET,microsoft@cn,🇨🇳 国内网站
+  - RULE-SET,steam@cn,🇨🇳 国内网站
+  - RULE-SET,cloudflare@cn,🇨🇳 国内网站
+
+  # 16. IP 规则分流
+  - RULE-SET,google_ip,🤖 AI,no-resolve
+  - RULE-SET,x_ip,📲 社交网络,no-resolve
+  - RULE-SET,telegram_ip,📲 社交网络,no-resolve
+  - RULE-SET,facebook_ip,📲 社交网络,no-resolve
+  - RULE-SET,apple_ip,🍎 苹果服务,no-resolve
+  - RULE-SET,cloudflare_ip,🚨 Cloudflare,no-resolve
+
+  # 17. 国内直连兜底 (GeoIP & Geosite)
+  - RULE-SET,cn,DIRECT
+  - RULE-SET,cn_ip,DIRECT,no-resolve
+
+  # 18. 最终兜底
   - MATCH,🐟 漏网之鱼
