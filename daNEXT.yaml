@@ -25,17 +25,17 @@ dns:
     - RULE-SET,google@cn,fake-ip
     - RULE-SET,x,fake-ip
     - RULE-SET,telegram,fake-ip
+    - RULE-SET,reddit,fake-ip
     - RULE-SET,instagram,fake-ip
     - RULE-SET,facebook,fake-ip
     - RULE-SET,threads,fake-ip
-    - RULE-SET,youtube,fake-ip
     - RULE-SET,tiktok,fake-ip
     - RULE-SET,spotify,fake-ip
     - RULE-SET,deezer,fake-ip
     - RULE-SET,lastfm,fake-ip
     - RULE-SET,github,fake-ip
     - RULE-SET,pikpak,fake-ip
-    - RULE-SET,dmm,fake-ip
+    - RULE-SET,pornmeta,fake-ip
     - RULE-SET,category-porn,fake-ip
     - RULE-SET,apple,real-ip
     - RULE-SET,microsoft,real-ip
@@ -47,12 +47,13 @@ dns:
     - RULE-SET,steam@cn,real-ip
     - RULE-SET,cloudflare@cn,real-ip
     - RULE-SET,cn,real-ip
-    - RULE-SET,MATCH,real-ip
+    - MATCH,real-ip
   nameserver:
     - 119.29.29.29
     - 223.5.5.5
     - 180.76.76.76
     - https://doh.pub/dns-query
+# ----- 请勿改动 -----
 port: 7890
 proxies:
 
@@ -154,7 +155,7 @@ proxy-groups:
   - name: ☁️ PikPak
     <<: *standard_proxies
 
-  - name: ㊙️ Dmm
+  - name: ㊙️ Pornmeta
     <<: *standard_proxies
 
   - name: 🔞 Porn
@@ -223,13 +224,13 @@ proxy-groups:
 rule-anchor:
   domain: &domain
     type: http
-    interval: 43200
+    interval: 86400
     behavior: domain
     format: mrs
 
   ip: &ip
     type: http
-    interval: 43200
+    interval: 86400
     behavior: ipcidr
     format: mrs
 
@@ -278,6 +279,10 @@ rule-providers:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.mrs
 
+  reddit:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/reddit.mrs
+
   instagram:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/instagram.mrs
@@ -291,10 +296,6 @@ rule-providers:
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/threads.mrs
 
   # ----- 6. 音视频 -----
-  youtube:
-    <<: *domain
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs
-
   tiktok:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tiktok.mrs
@@ -321,10 +322,10 @@ rule-providers:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/pikpak.mrs
 
-  # ----- 9. Dmm -----
-  dmm:
+  # ----- 9. Pornmeta -----
+  pornmeta:
     <<: *domain
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/dmm.mrs
+    url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/mihomo/pornmeta.mrs
 
   # ----- 10. Porn -----
   category-porn:
@@ -438,12 +439,12 @@ rules:
   # 5. 社交网络
   - RULE-SET,x,📲 社交网络
   - RULE-SET,telegram,📲 社交网络
+  - RULE-SET,reddit,📲 社交网络
   - RULE-SET,instagram,📲 社交网络
   - RULE-SET,facebook,📲 社交网络
   - RULE-SET,threads,📲 社交网络
 
   # 6. 音视频
-  - RULE-SET,youtube,📀 音视频
   - RULE-SET,tiktok,📀 音视频
   - RULE-SET,spotify,📀 音视频
   - RULE-SET,deezer,📀 音视频
@@ -455,8 +456,8 @@ rules:
   # 8. Pikpak
   - RULE-SET,pikpak,☁️ PikPak
 
-  # 9. Dmm
-  - RULE-SET,dmm,㊙️ Dmm
+  # 9. Pornmeta
+  - RULE-SET,pornmeta,㊙️ Pornmeta
 
   # 10. Porn
   - RULE-SET,category-porn,🔞 Porn
