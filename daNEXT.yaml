@@ -1,4 +1,6 @@
-# ----- Fake-IP -----
+# ===================================================
+# DNS 方案: Fake-IP
+# ===================================================
 dns:
   enable: true
   ipv6: false
@@ -31,9 +33,10 @@ dns:
     - RULE-SET,spotify,fake-ip
     - RULE-SET,deezer,fake-ip
     - RULE-SET,lastfm,fake-ip
+    - RULE-SET,github,fake-ip
     - RULE-SET,pikpak,fake-ip
     - RULE-SET,dmm,fake-ip
-    - RULE-SET,javdb,fake-ip
+    - RULE-SET,category-porn,fake-ip
     - RULE-SET,apple,real-ip
     - RULE-SET,microsoft,real-ip
     - RULE-SET,steam,real-ip
@@ -49,10 +52,13 @@ dns:
     - 119.29.29.29
     - 223.5.5.5
     - 180.76.76.76
+    - https://doh.pub/dns-query
 port: 7890
 proxies:
 
-# ----- 机场配置模块 -----
+# ===================================================
+# 机场配置模块
+# ===================================================
 provider_config: &provider_config
   type: http
   interval: 86400
@@ -63,15 +69,18 @@ provider_config: &provider_config
     url: http://www.apple.com/library/test/success.html
     interval: 300
 
+# ===================================================
+# 订阅配置模块
+# ===================================================
 proxy-providers:
-  AP1:
+  V2R:
     url: #修改你的机场1订阅地址
     <<: *provider_config
     override:
       additional-prefix: "[V2R] "
       skip-cert-verify: true
       udp: true
-  AP2:
+  SSR:
     url: #修改你的机场2订阅地址
     <<: *provider_config
     override:
@@ -79,7 +88,9 @@ proxy-providers:
       skip-cert-verify: true
       udp: true
 
-# ----- 分组配置模块 -----
+# ===================================================
+# 锚点配置模块
+# ===================================================
 standard_proxies: &standard_proxies
   type: select
   proxies:
@@ -107,7 +118,6 @@ all_proxies: &all_proxies
     - 🌏️ 其他节点
     - DIRECT
 
-# ----- 节点配置模块 -----
 filter_proxies: &filter_proxies
   type: url-test
   url: http://www.gstatic.com/generate_204
@@ -115,9 +125,10 @@ filter_proxies: &filter_proxies
   tolerance: 100
   include-all: true
 
-# ----- 域名策略模块 -----
+# ===================================================
+# 域名策略组模块
+# ===================================================
 proxy-groups:
-  # 基础策略
   - name: 🚀 总模式
     <<: *all_proxies
 
@@ -135,6 +146,9 @@ proxy-groups:
     <<: *standard_proxies
 
   - name: 📀 音视频
+    <<: *standard_proxies
+
+  - name: 📓 Github
     <<: *standard_proxies
 
   - name: ☁️ PikPak
@@ -164,21 +178,7 @@ proxy-groups:
   - name: 🇨🇳 国内网站
     <<: *standard_proxies
 
-  - name: 🎯 全球直连
-    type: select
-    proxies:
-      - DIRECT
-      - 🚀 总模式
-      - ♻️ 自动选择
-
   - name: ⛔️ 广告拦截
-    type: select
-    proxies:
-      - REJECT
-      - DIRECT
-      - PASS
-
-  - name: 🍃 应用净化
     type: select
     proxies:
       - REJECT
@@ -188,7 +188,7 @@ proxy-groups:
   - name: 🐟 漏网之鱼
     <<: *standard_proxies
 
-  # ----- 节点分组策略 -----
+  # ----- 国家与地区过滤 -----
   - name: 🇭🇰 香港节点
     <<: *filter_proxies
     filter: '^(?=.*((?i)🇭🇰|香港|(\b(HK|Hong)\b))).*$'
@@ -217,7 +217,9 @@ proxy-groups:
     <<: *filter_proxies
     filter: "^(?!.*(🇺🇸|美国|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States|🇭🇰|香港|HK|Hong|🇯🇵|日本|川日|东京|大阪|泉日|埼玉|JP|Japan|🇨🇳|台湾|🇹🇼|TW|🇸🇬|新加坡|狮|SG|Singapore|🇰🇷|韩国|首尔|KR|Korea)).*$"
 
-# ----- 规则集模块 -----
+# ===================================================
+# 规则集模块
+# ===================================================
 rule-anchor:
   domain: &domain
     type: http
@@ -231,19 +233,21 @@ rule-anchor:
     behavior: ipcidr
     format: mrs
 
-# =============================== -  远程规则  - ================================
+# ===================================================
+# 远程规则
+# ===================================================
 rule-providers:
-  # 内网规则
+  # ----- 1. 内网与私有网络 -----
   private:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs
 
-  # 广告拦截
+  # ----- 2. 广告拦截 -----
   category-ads-all:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ads-all.mrs
 
-  # PT/BT
+  # ----- 3. PT/BT -----
   tracker:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tracker.mrs
@@ -252,7 +256,7 @@ rule-providers:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-pt.mrs
 
-  # AI 相关
+  # ----- 4. AI 相关 -----
   category-ai-!cn:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ai-!cn.mrs
@@ -265,7 +269,7 @@ rule-providers:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google@cn.mrs
 
-  # 社交网络
+  # ----- 5. 社交网络 -----
   x:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/x.mrs
@@ -286,7 +290,7 @@ rule-providers:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/threads.mrs
 
-  # 音视频
+  # ----- 6. 音视频 -----
   youtube:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs
@@ -307,22 +311,27 @@ rule-providers:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/lastfm.mrs
 
-  # pikpak
+  # ----- 7. Github -----
+  github:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs
+
+  # ----- 8. PikPak -----
   pikpak:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/pikpak.mrs
 
-  # dmm
+  # ----- 9. Dmm -----
   dmm:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/dmm.mrs
 
-  # porn
-  javdb:
+  # ----- 10. Porn -----
+  category-porn:
     <<: *domain
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/javdb.mrs
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-porn.mrs
 
-  # apple
+  # ----- 11. 苹果服务 -----
   apple:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple.mrs
@@ -331,7 +340,7 @@ rule-providers:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple@cn.mrs
 
-  # microsoft
+  # ----- 12. 微软服务 -----
   microsoft:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.mrs
@@ -340,7 +349,7 @@ rule-providers:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft@cn.mrs
 
-  # 游戏平台
+  # ----- 13. 游戏平台 -----
   steam:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam.mrs
@@ -349,7 +358,7 @@ rule-providers:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam@cn.mrs
 
-  # cloudflare
+  # ----- 14. Cloudflare -----
   cloudflare:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cloudflare.mrs
@@ -358,17 +367,17 @@ rule-providers:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cloudflare@cn.mrs
 
-  # 国外网站
+  # ----- 15. 国外网站 -----
   geolocation-!cn:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.mrs
 
-  # 国内直连
+  # ----- 16. 国内网站 -----
   cn:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.mrs
 
-  # IP 规则集（GeoIP）
+  # ----- 17. IP 规则集 (GeoIP) -----
   private_ip:
     <<: *ip
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/private.mrs
@@ -405,6 +414,9 @@ rule-providers:
     <<: *ip
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo-lite/geoip/cn.mrs
 
+# ===================================================
+# 匹配逻辑
+# ===================================================
 rules:
   # 1. 内网与私有网络 (直连)
   - RULE-SET,private_ip,DIRECT,no-resolve
@@ -437,37 +449,40 @@ rules:
   - RULE-SET,deezer,📀 音视频
   - RULE-SET,lastfm,📀 音视频
 
-  # 7. Pikpak
+  # 7. Github
+  - RULE-SET,github,📓 Github
+
+  # 8. Pikpak
   - RULE-SET,pikpak,☁️ PikPak
 
-  # 8. Dmm
+  # 9. Dmm
   - RULE-SET,dmm,㊙️ Dmm
 
-  # 9. Porn
-  - RULE-SET,javdb,🔞 Porn
+  # 10. Porn
+  - RULE-SET,category-porn,🔞 Porn
 
-  # 10. 苹果服务
+  # 11. 苹果服务
   - RULE-SET,apple,🍎 苹果服务
 
-  # 11. 微软服务
+  # 12. 微软服务
   - RULE-SET,microsoft,Ⓜ️ 微软服务
 
-  # 12. 游戏平台
+  # 13. 游戏平台
   - RULE-SET,steam,🎮 游戏平台
 
-  # 13. Cloudflare
+  # 14. Cloudflare
   - RULE-SET,cloudflare,🚨 Cloudflare
 
-  # 14. 国外网站
+  # 15. 国外网站
   - RULE-SET,geolocation-!cn,🌐 国外网站
 
-  # 15. 国内网站
+  # 16. 国内网站
   - RULE-SET,apple@cn,🇨🇳 国内网站
   - RULE-SET,microsoft@cn,🇨🇳 国内网站
   - RULE-SET,steam@cn,🇨🇳 国内网站
   - RULE-SET,cloudflare@cn,🇨🇳 国内网站
 
-  # 16. IP 规则分流
+  # 17. IP 规则分流
   - RULE-SET,google_ip,🤖 AI,no-resolve
   - RULE-SET,x_ip,📲 社交网络,no-resolve
   - RULE-SET,telegram_ip,📲 社交网络,no-resolve
@@ -475,9 +490,9 @@ rules:
   - RULE-SET,apple_ip,🍎 苹果服务,no-resolve
   - RULE-SET,cloudflare_ip,🚨 Cloudflare,no-resolve
 
-  # 17. 国内直连兜底 (GeoIP & Geosite)
+  # 18. 国内直连兜底 (GeoIP & Geosite)
   - RULE-SET,cn,DIRECT
   - RULE-SET,cn_ip,DIRECT,no-resolve
 
-  # 18. 最终兜底
+  # 19. 最终兜底
   - MATCH,🐟 漏网之鱼
