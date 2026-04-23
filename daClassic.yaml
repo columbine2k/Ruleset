@@ -194,7 +194,7 @@ rule-anchor:
 rule-providers:
   DnsProxy:
     <<: *basic
-    url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/DnsProxy.list
+    url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/classical/DnsProxy.list
 
   LocalAreaNetwork:
     <<: *basic
@@ -226,7 +226,7 @@ rule-providers:
 
   Pornmeta:
     <<: *basic
-    url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/Pornmeta.list
+    url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/classical/Pornmeta.list
 
   Apple:
     <<: *basic
@@ -242,7 +242,7 @@ rule-providers:
 
   Mzone:
     <<: *basic
-    url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/Mzone.list
+    url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/classical/Mzone.list
 
   Twitter:
     <<: *basic
