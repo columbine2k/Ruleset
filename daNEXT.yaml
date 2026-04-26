@@ -39,7 +39,7 @@ dns:
     - RULE-SET,category-porn,fake-ip
     - RULE-SET,apple,real-ip
     - RULE-SET,microsoft,real-ip
-    - RULE-SET,steam,real-ip
+    - RULE-SET,steam,fake-ip
     - RULE-SET,cloudflare,fake-ip
     - RULE-SET,geolocation-!cn,fake-ip
     - RULE-SET,apple@cn,real-ip
@@ -174,9 +174,6 @@ proxy-groups:
     <<: *standard_proxies
 
   - name: 🌐 国外网站
-    <<: *standard_proxies
-
-  - name: 🇨🇳 国内网站
     <<: *standard_proxies
 
   - name: ⛔️ 广告拦截
@@ -478,10 +475,10 @@ rules:
   - RULE-SET,geolocation-!cn,🌐 国外网站
 
   # 16. 国内网站
-  - RULE-SET,apple@cn,🇨🇳 国内网站
-  - RULE-SET,microsoft@cn,🇨🇳 国内网站
-  - RULE-SET,steam@cn,🇨🇳 国内网站
-  - RULE-SET,cloudflare@cn,🇨🇳 国内网站
+  - RULE-SET,apple@cn,DIRECT
+  - RULE-SET,microsoft@cn,DIRECT
+  - RULE-SET,steam@cn,DIRECT
+  - RULE-SET,cloudflare@cn,DIRECT
 
   # 17. IP 规则分流
   - RULE-SET,google_ip,🤖 AI,no-resolve
