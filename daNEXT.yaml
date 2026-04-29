@@ -40,6 +40,8 @@ dns:
     - RULE-SET,apple,real-ip
     - RULE-SET,microsoft,real-ip
     - RULE-SET,steam,fake-ip
+    - RULE-SET,photography,fake-ip
+    - RULE-SET,etc,fake-ip
     - RULE-SET,cloudflare,fake-ip
     - RULE-SET,geolocation-!cn,fake-ip
     - RULE-SET,apple@cn,real-ip
@@ -168,6 +170,9 @@ proxy-groups:
     <<: *standard_proxies
 
   - name: 🎮 游戏平台
+    <<: *standard_proxies
+
+  - name: 🎨 游戏平台
     <<: *standard_proxies
 
   - name: 🚨 Cloudflare
@@ -356,7 +361,16 @@ rule-providers:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam@cn.mrs
 
-  # ----- 14. Cloudflare -----
+  # ----- 14. 个人补充规则 -----
+  photography:
+    <<: *domain
+    url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/mihomo/photography.mrs
+
+  etc:
+    <<: *domain
+    url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/mihomo/etc.mrs
+
+  # ----- 15. Cloudflare -----
   cloudflare:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cloudflare.mrs
@@ -365,17 +379,17 @@ rule-providers:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cloudflare@cn.mrs
 
-  # ----- 15. 国外网站 -----
+  # ----- 16. 国外网站 -----
   geolocation-!cn:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.mrs
 
-  # ----- 16. 国内网站 -----
+  # ----- 17. 国内网站 -----
   cn:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.mrs
 
-  # ----- 17. IP 规则集 (GeoIP) -----
+  # ----- 18. IP 规则集 (GeoIP) -----
   private_ip:
     <<: *ip
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/private.mrs
@@ -468,19 +482,23 @@ rules:
   # 13. 游戏平台
   - RULE-SET,steam,🎮 游戏平台
 
-  # 14. Cloudflare
+  # 14. 个人补充规则
+  - RULE-SET,photography,🎨 游戏平台
+  - RULE-SET,etc,🎨 游戏平台
+
+  # 15. Cloudflare
   - RULE-SET,cloudflare,🚨 Cloudflare
 
-  # 15. 国外网站
+  # 16. 国外网站
   - RULE-SET,geolocation-!cn,🌐 国外网站
 
-  # 16. 国内网站
+  # 17. 国内网站
   - RULE-SET,apple@cn,DIRECT
   - RULE-SET,microsoft@cn,DIRECT
   - RULE-SET,steam@cn,DIRECT
   - RULE-SET,cloudflare@cn,DIRECT
 
-  # 17. IP 规则分流
+  # 18. IP 规则分流
   - RULE-SET,google_ip,🤖 AI,no-resolve
   - RULE-SET,x_ip,📲 社交网络,no-resolve
   - RULE-SET,telegram_ip,📲 社交网络,no-resolve
@@ -488,9 +506,9 @@ rules:
   - RULE-SET,apple_ip,🍎 苹果服务,no-resolve
   - RULE-SET,cloudflare_ip,🚨 Cloudflare,no-resolve
 
-  # 18. 国内直连兜底 (GeoIP & Geosite)
+  # 19. 国内直连兜底 (GeoIP & Geosite)
   - RULE-SET,cn,DIRECT
   - RULE-SET,cn_ip,DIRECT,no-resolve
 
-  # 19. 最终兜底
+  # 20. 最终兜底
   - MATCH,🐟 漏网之鱼
