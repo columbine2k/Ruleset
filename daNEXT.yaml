@@ -172,7 +172,7 @@ proxy-groups:
   - name: 🎮 游戏平台
     <<: *standard_proxies
 
-  - name: 🎨 游戏平台
+  - name: 🎨 个人补充规则
     <<: *standard_proxies
 
   - name: 🚨 Cloudflare
@@ -483,8 +483,8 @@ rules:
   - RULE-SET,steam,🎮 游戏平台
 
   # 14. 个人补充规则
-  - RULE-SET,photography,🎨 游戏平台
-  - RULE-SET,etc,🎨 游戏平台
+  - RULE-SET,photography,🎨 个人补充规则
+  - RULE-SET,etc,🎨 个人补充规则
 
   # 15. Cloudflare
   - RULE-SET,cloudflare,🚨 Cloudflare
