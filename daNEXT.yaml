@@ -489,6 +489,7 @@ rules:
 
   # 14. 摄影美学
   - RULE-SET,photography,📷️ 摄影美学
+  - RULE-SET,photography@cn,📷️ 摄影美学
 
   # 15. Cloudflare
   - RULE-SET,cloudflare,🚨 Cloudflare
