@@ -1,37 +1,28 @@
 payload:
-  - +.imaonline.jp
-  - +.moma.org
-  - +.photobookstore.co.uk
-  - +.magnumphotos.com
-  - +.lensculture.com
-  - +.xico.co.jp
-  - +.markpower.co.uk
-  - +.benhorne.com
-  - +.photonote.me
-  - +.joelsternfeld.net
-  - +.camera-girls.net
-  - +.dianamarkosian.com
-  - +.hanayo.com
-  - +.mackbooks.co.uk
-  - +.50mm.jp
-  - +.moom.cat
-  - +.grapeot.me
-  - +.thedarkroom.com
-  - +.pieaerts.com
-  - +.shikamaphoto.com
-  - +.photopfj.sakura.ne.jp
-  - +.alexburkephoto.com
-  - +.tillmans.co.uk
-  - +.grainydreams.com
-  - +.patrick-wack.com
-  - +.palomadooley.net
-  - +.cpoy.org
-  - +.brucepercy.co.uk
-  - +.l39camera.com
-  - +.mikeeckman.com
-  - +.upphotographers.com
-  - +.alibosworth.com
-  - +.hideakihamada.com
-  - +.alecsoth.com
-  - +.rinkokawauchi.com
-  - +.yoshihikoueda.com
+  # --- 国际著名摄影机构/画廊/大奖 ---
+  - +.moma.org # 纽约现代艺术博物馆 (MoMA 摄影收藏)
+  - +.magnumphotos.com # 马格南图片社 (Magnum Photos)
+  - +.lensculture.com # LensCulture (国际摄影大奖/画廊)
+  - +.cpoy.org # 年度大专院校摄影比赛 (CPOY)
+  - +.upphotographers.com # UP Photographers (纪实摄影组织)
+  # --- 欧美摄影师个人站 ---
+  - +.joelsternfeld.net # 乔尔·斯坦菲尔德 (Joel Sternfeld)
+  - +.alecsoth.com # 亚历克·索斯 (Alec Soth)
+  - +.markpower.co.uk # 马克·鲍尔 (Mark Power)
+  - +.benhorne.com # Ben Horne (大画幅风光摄影)
+  - +.dianamarkosian.com # Diana Markosian (纪实摄影师)
+  - +.tillmans.co.uk # 沃尔夫冈·提尔曼斯 (Wolfgang Tillmans)
+  - +.alexburkephoto.com # Alex Burke (大画幅胶片风光)
+  - +.patrick-wack.com # Patrick Wack (知名纪实摄影师)
+  - +.palomadooley.net # Paloma Dooley
+  - +.brucepercy.co.uk # Bruce Percy (极简风光摄影)
+  - +.alibosworth.com # Ali Bosworth
+  # --- 摄影书店/胶片相关/器材博客 ---
+  - +.photobookstore.co.uk # 英国 PhotobookStore (买书圣地)
+  - +.mackbooks.co.uk # MACK 出版社 (顶级摄影书出版)
+  - +.moom.cat # MOOM 摄影书店 (台湾，建议走代理)
+  - +.thedarkroom.com # The Darkroom (胶片冲洗/技术博客)
+  - +.grainydreams.com # 胶片相关博客
+  - +.mikeeckman.com # Mike Eckman (非常著名的相机评测博客)
+  - +.grapeot.me # 某摄影师/程序员的个人博客 (常分享技术)
+  - +.pieaerts.com # 可能是个人画廊或书店
