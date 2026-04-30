@@ -41,8 +41,9 @@ dns:
     - RULE-SET,microsoft,real-ip
     - RULE-SET,steam,fake-ip
     - RULE-SET,photography,fake-ip
-    - RULE-SET,etc,fake-ip
+    - RULE-SET,photography@cn,real-ip
     - RULE-SET,cloudflare,fake-ip
+    - RULE-SET,etc,fake-ip
     - RULE-SET,geolocation-!cn,fake-ip
     - RULE-SET,apple@cn,real-ip
     - RULE-SET,microsoft@cn,real-ip
@@ -172,7 +173,7 @@ proxy-groups:
   - name: 🎮 游戏平台
     <<: *standard_proxies
 
-  - name: 🎨 个人补充规则
+  - name: 📷️ 摄影美学
     <<: *standard_proxies
 
   - name: 🚨 Cloudflare
@@ -361,14 +362,14 @@ rule-providers:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam@cn.mrs
 
-  # ----- 14. 个人补充规则 -----
+  # ----- 14. 摄影美学 -----
   photography:
     <<: *domain
     url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/mihomo/photography.mrs
 
-  etc:
+  photography@cn:
     <<: *domain
-    url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/mihomo/etc.mrs
+    url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/mihomo/photography@cn.mrs
 
   # ----- 15. Cloudflare -----
   cloudflare:
@@ -380,6 +381,10 @@ rule-providers:
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cloudflare@cn.mrs
 
   # ----- 16. 国外网站 -----
+  etc:
+    <<: *domain
+    url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/mihomo/etc.mrs
+
   geolocation-!cn:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.mrs
@@ -482,14 +487,14 @@ rules:
   # 13. 游戏平台
   - RULE-SET,steam,🎮 游戏平台
 
-  # 14. 个人补充规则
-  - RULE-SET,photography,🎨 个人补充规则
-  - RULE-SET,etc,🎨 个人补充规则
+  # 14. 摄影美学
+  - RULE-SET,photography,📷️ 摄影美学
 
   # 15. Cloudflare
   - RULE-SET,cloudflare,🚨 Cloudflare
 
   # 16. 国外网站
+  - RULE-SET,etc,🌐 国外网站
   - RULE-SET,geolocation-!cn,🌐 国外网站
 
   # 17. 国内网站
