@@ -29,7 +29,6 @@ dns:
     - RULE-SET,instagram,fake-ip
     - RULE-SET,facebook,fake-ip
     - RULE-SET,threads,fake-ip
-    - RULE-SET,tiktok,fake-ip
     - RULE-SET,spotify,fake-ip
     - RULE-SET,deezer,fake-ip
     - RULE-SET,lastfm,fake-ip
@@ -43,7 +42,6 @@ dns:
     - RULE-SET,photography,fake-ip
     - RULE-SET,photography@cn,real-ip
     - RULE-SET,cloudflare,fake-ip
-    - RULE-SET,etc,fake-ip
     - RULE-SET,geolocation-!cn,fake-ip
     - RULE-SET,apple@cn,real-ip
     - RULE-SET,microsoft@cn,real-ip
@@ -52,10 +50,9 @@ dns:
     - RULE-SET,cn,real-ip
     - MATCH,real-ip
   nameserver:
-    - 119.29.29.29
-    - 223.5.5.5
-    - 180.76.76.76
     - https://doh.pub/dns-query
+    - 223.5.5.5
+    - 119.29.29.29
 # ----- 请勿改动 -----
 port: 7890
 proxies:
@@ -67,7 +64,7 @@ provider_config: &provider_config
   type: http
   interval: 86400
   proxy: DIRECT
-  user-agent: clash.meta.mihomo
+  user-agent: clash.meta
   health-check:
     enable: true
     url: http://www.apple.com/library/test/success.html
@@ -299,10 +296,6 @@ rule-providers:
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/threads.mrs
 
   # ----- 6. 音视频 -----
-  tiktok:
-    <<: *domain
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tiktok.mrs
-
   spotify:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/spotify.mrs
@@ -380,19 +373,15 @@ rule-providers:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cloudflare@cn.mrs
 
-  # ----- 16. 国外网站 -----
-  etc:
-    <<: *domain
-    url: https://raw.githubusercontent.com/columbine2k/Ruleset/meta/mihomo/etc.mrs
-
-  geolocation-!cn:
-    <<: *domain
-    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.mrs
-
-  # ----- 17. 国内网站 -----
+  # ----- 16. 国内网站 -----
   cn:
     <<: *domain
     url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.mrs
+
+  # ----- 17. 国外网站 -----
+  geolocation-!cn:
+    <<: *domain
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.mrs
 
   # ----- 18. IP 规则集 (GeoIP) -----
   private_ip:
@@ -461,7 +450,6 @@ rules:
   - RULE-SET,threads,📲 社交网络
 
   # 6. 音视频
-  - RULE-SET,tiktok,📀 音视频
   - RULE-SET,spotify,📀 音视频
   - RULE-SET,deezer,📀 音视频
   - RULE-SET,lastfm,📀 音视频
@@ -494,15 +482,18 @@ rules:
   # 15. Cloudflare
   - RULE-SET,cloudflare,🚨 Cloudflare
 
-  # 16. 国外网站
-  - RULE-SET,etc,🌐 国外网站
-  - RULE-SET,geolocation-!cn,🌐 国外网站
-
-  # 17. 国内网站
+  # 16. 国内网站
+  # 16.1 规则集直连
   - RULE-SET,apple@cn,DIRECT
   - RULE-SET,microsoft@cn,DIRECT
   - RULE-SET,steam@cn,DIRECT
   - RULE-SET,cloudflare@cn,DIRECT
+  # 16.2 常用关键词/域名直连
+  # 16.3 智能家居与小米
+  - DOMAIN-KEYWORD,mijia,DIRECT
+
+  # 17. 国外网站
+  - RULE-SET,geolocation-!cn,🌐 国外网站
 
   # 18. IP 规则分流
   - RULE-SET,google_ip,🤖 AI,no-resolve
