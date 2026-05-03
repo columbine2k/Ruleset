@@ -1,4 +1,6 @@
-# ----- redir-host -----
+# ===================================================
+# DNS 方案: Redir-Host
+# ===================================================
 dns:
   enable: true
   ipv6: false
@@ -17,29 +19,36 @@ dns:
   nameserver:
     - https://doh.pub/dns-query
     - 223.5.5.5
+    - 119.29.29.29
+# ----- 请勿改动 -----
 port: 7890
 proxies:
 
-# ----- 机场配置模块 -----
+# ===================================================
+# 机场配置模块
+# ===================================================
 provider_config: &provider_config
   type: http
-  interval: 43200
+  interval: 86400
   proxy: DIRECT
-  user-agent: clash.meta
+  user-agent: clash.meta.mihomo
   health-check:
     enable: true
-    url: http://www.gstatic.com/generate_204
+    url: http://www.apple.com/library/test/success.html
     interval: 300
 
+# ===================================================
+# 订阅配置模块
+# ===================================================
 proxy-providers:
-  AP1:
+  V2R:
     url: #修改你的机场1订阅地址
     <<: *provider_config
     override:
       additional-prefix: "[V2R] "
       skip-cert-verify: true
       udp: true
-  AP2:
+  SSR:
     url: #修改你的机场2订阅地址
     <<: *provider_config
     override:
@@ -47,7 +56,9 @@ proxy-providers:
       skip-cert-verify: true
       udp: true
 
-# 分组配置模块
+# ===================================================
+# 锚点配置模块
+# ===================================================
 standard_proxies: &standard_proxies
   type: select
   proxies:
@@ -75,7 +86,6 @@ all_proxies: &all_proxies
     - 🌏️ 其他节点
     - DIRECT
 
-# ----- 节点配置模块 -----
 filter_proxies: &filter_proxies
   type: url-test
   url: http://www.gstatic.com/generate_204
@@ -83,6 +93,9 @@ filter_proxies: &filter_proxies
   tolerance: 100
   include-all: true
 
+# ===================================================
+# 域名策略组模块
+# ===================================================
 proxy-groups:
   - name: 🚀 总模式
     <<: *all_proxies
@@ -94,57 +107,46 @@ proxy-groups:
   - name: ♻️ 自动选择
     <<: *filter_proxies
 
-  - name: 🚨 国外DNS
+  - name: 🤖 AI
     <<: *standard_proxies
 
-  - name: 🤖 AI
+  - name: 📲 社交网络
+    <<: *standard_proxies
+
+  - name: 📀 音视频
+    <<: *standard_proxies
+
+  - name: 📓 Github
     <<: *standard_proxies
 
   - name: ☁️ PikPak
     <<: *standard_proxies
 
-  - name: 🔞 Pornmeta
+  - name: ㊙️ Pornmeta
+    <<: *standard_proxies
+
+  - name: 🔞 Porn
     <<: *standard_proxies
 
   - name: 🍎 苹果服务
     <<: *standard_proxies
 
-  - name: Ⓜ️ 微软云盘
-    <<: *standard_proxies
-
   - name: Ⓜ️ 微软服务
-    <<: *standard_proxies
-
-  - name: 💡 Mzone
-    <<: *standard_proxies
-
-  - name: 📲 聊天社交
-    <<: *standard_proxies
-
-  - name: 🎵 音乐流媒
     <<: *standard_proxies
 
   - name: 🎮 游戏平台
     <<: *standard_proxies
 
-  - name: 🌐 国外媒体
+  - name: 📷️ 摄影美学
     <<: *standard_proxies
 
-  - name: 🎯 全球直连
-    type: select
-    proxies:
-      - DIRECT
-      - 🚀 总模式
-      - ♻️ 自动选择
+  - name: 🚨 Cloudflare
+    <<: *standard_proxies
+
+  - name: 🌐 国外网站
+    <<: *standard_proxies
 
   - name: ⛔️ 广告拦截
-    type: select
-    proxies:
-      - REJECT
-      - DIRECT
-      - PASS
-
-  - name: 🍃 应用净化
     type: select
     proxies:
       - REJECT
@@ -154,6 +156,7 @@ proxy-groups:
   - name: 🐟 漏网之鱼
     <<: *standard_proxies
 
+  # ----- 国家与地区过滤 -----
   - name: 🇭🇰 香港节点
     <<: *filter_proxies
     filter: '^(?=.*((?i)🇭🇰|香港|(\b(HK|Hong)\b))).*$'
@@ -168,7 +171,7 @@ proxy-groups:
 
   - name: 🏝️ 台湾节点
     <<: *filter_proxies
-    filter: "^(?=.*((?i)🇨🇳|🇹🇼|TW|台湾)).*$"
+    filter: "^(?=.*((?i)🇹🇼|TW|台湾)).*$"
 
   - name: 🇰🇷 韩国节点
     <<: *filter_proxies
@@ -182,15 +185,19 @@ proxy-groups:
     <<: *filter_proxies
     filter: "^(?!.*(🇺🇸|美国|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States|🇭🇰|香港|HK|Hong|🇯🇵|日本|川日|东京|大阪|泉日|埼玉|JP|Japan|🇨🇳|台湾|🇹🇼|TW|🇸🇬|新加坡|狮|SG|Singapore|🇰🇷|韩国|首尔|KR|Korea)).*$"
 
-# ----- ruleSet配置模块 -----
+# ===================================================
+# 规则集模块
+# ===================================================
 rule-anchor:
-  basic: &basic
+  domain: &domain
     type: http
-    interval: 43200
+    interval: 86400
     behavior: classical
-    format: text
+    format: yaml
 
-# ----- 规则集 -----
+# ===================================================
+# 远程规则
+# ===================================================
 rule-providers:
   DnsProxy:
     <<: *basic
