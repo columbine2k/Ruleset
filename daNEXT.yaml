@@ -16,43 +16,16 @@ dns:
   respect-rules: false
   prefer-h3: false
   fake-ip-filter:
-    - RULE-SET,private,real-ip
-    - RULE-SET,category-ads-all,real-ip
-    - RULE-SET,tracker,real-ip
-    - RULE-SET,category-pt,real-ip
-    - RULE-SET,category-ai-!cn,fake-ip
-    - RULE-SET,google,fake-ip
-    - RULE-SET,google@cn,fake-ip
-    - RULE-SET,x,fake-ip
-    - RULE-SET,telegram,fake-ip
-    - RULE-SET,reddit,fake-ip
-    - RULE-SET,instagram,fake-ip
-    - RULE-SET,facebook,fake-ip
-    - RULE-SET,threads,fake-ip
-    - RULE-SET,spotify,fake-ip
-    - RULE-SET,deezer,fake-ip
-    - RULE-SET,lastfm,fake-ip
-    - RULE-SET,github,fake-ip
-    - RULE-SET,pikpak,fake-ip
-    - RULE-SET,pornmeta,fake-ip
-    - RULE-SET,category-porn,fake-ip
-    - RULE-SET,apple,real-ip
-    - RULE-SET,microsoft,real-ip
-    - RULE-SET,steam,fake-ip
-    - RULE-SET,photography,fake-ip
-    - RULE-SET,photography@cn,real-ip
-    - RULE-SET,cloudflare,fake-ip
-    - RULE-SET,geolocation-!cn,fake-ip
-    - RULE-SET,apple@cn,real-ip
-    - RULE-SET,microsoft@cn,real-ip
-    - RULE-SET,steam@cn,real-ip
-    - RULE-SET,cloudflare@cn,real-ip
     - RULE-SET,cn,real-ip
+    - RULE-SET,private,real-ip
+    - RULE-SET,geolocation-!cn,fake-ip
     - MATCH,real-ip
   nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
     - 223.5.5.5
-    - 119.29.29.29
-    - 180.76.76.76
+  nameserver-policy:
+    "+.steampowered.com": "223.5.5.5"
 # ----- 请勿改动 -----
 port: 7890
 proxies:
