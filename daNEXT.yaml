@@ -438,6 +438,7 @@ rules:
 
   # 10. Porn
   - RULE-SET,category-porn,🔞 Porn
+  - DOMAIN-SUFFIX,bt1207uo.top,🔞 Porn
 
   # 11. 苹果服务
   - RULE-SET,apple,🍎 苹果服务
