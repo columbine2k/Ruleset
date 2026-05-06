@@ -18,6 +18,8 @@ dns:
   fake-ip-filter:
     - RULE-SET,cn,real-ip
     - RULE-SET,private,real-ip
+    - RULE-SET,pornmeta,fake-ip
+    - RULE-SET,photography,fake-ip
     - RULE-SET,geolocation-!cn,fake-ip
     - MATCH,real-ip
   nameserver:
@@ -438,7 +440,6 @@ rules:
 
   # 10. Porn
   - RULE-SET,category-porn,🔞 Porn
-  - DOMAIN-SUFFIX,bt1207uo.top,🔞 Porn
 
   # 11. 苹果服务
   - RULE-SET,apple,🍎 苹果服务
