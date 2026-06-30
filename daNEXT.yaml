@@ -13,12 +13,12 @@ dns:
   respect-rules: true
   prefer-h3: false
   fake-ip-filter:
-   - RULE-SET,private,real-ip
-   - RULE-SET,category-pt,real-ip
-   - RULE-SET,apple@cn,real-ip
-   - RULE-SET,cn,real-ip
-   - RULE-SET,cloudflare@cn,real-ip
-   - RULE-SET,microsoft@cn,real-ip
+    - RULE-SET,private,real-ip
+    - RULE-SET,category-pt,real-ip
+    - RULE-SET,apple@cn,real-ip
+    - RULE-SET,cn,real-ip
+    - RULE-SET,cloudflare@cn,real-ip
+    - RULE-SET,microsoft@cn,real-ip
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
@@ -427,6 +427,9 @@ rules:
   # 3. PT/BT (直连)
   - RULE-SET,tracker,DIRECT,no-resolve
   - RULE-SET,category-pt,DIRECT,no-resolve
+
+  # 禁用 QUIC (UDP 443)
+  - AND,((NETWORK,UDP),(DST-PORT,443)),REJECT
 
   # 4. AI 相关
   - RULE-SET,category-ai-!cn,🤖 AI
